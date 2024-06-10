@@ -5,8 +5,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 interface Props {
   zoom?: number;
   onLocationChange?: (location: [number, number]) => void;
-  destination?: [number, number] | null;
-  route?: any;
 }
 
 const Map: React.FC<Props> = ({ zoom = 12, onLocationChange }) => {
