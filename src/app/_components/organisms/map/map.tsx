@@ -10,12 +10,13 @@ interface Props {
 }
 
 const Map: React.FC<Props> = ({ zoom = 12, onLocationChange }) => {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
-  const initializeMap = () => {
+  useEffect(() => {
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY!;
     const map = new mapboxgl.Map({
-      container: "map",
+      container: mapContainerRef.current!,
       style: "mapbox://styles/mapbox/streets-v12",
       center: [139.6917, 35.6895],
       zoom: zoom,
@@ -35,15 +36,10 @@ const Map: React.FC<Props> = ({ zoom = 12, onLocationChange }) => {
       mapRef.current = map;
       geolocateControl.trigger();
     });
-
-    return map;
-  };
-
-  useEffect(() => {
-    const map = initializeMap();
     return () => map.remove();
   }, [zoom, onLocationChange]);
-  return <div id="map" className="w-full h-full" />;
+
+  return <div ref={mapContainerRef} className="w-full h-full" />;
 };
 
 export default Map;
